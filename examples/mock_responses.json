@@ -1,0 +1,24 @@
+[
+  {
+    "thought": "Start by finding where discounts are calculated.",
+    "tool": "search_code",
+    "args": { "query": "def apply_discount" }
+  },
+  {
+    "thought": "Read the pricing module to see the actual arithmetic.",
+    "tool": "read_file",
+    "args": { "path": "shop/pricing.py", "start": 1, "end": 45 }
+  },
+  {
+    "thought": "percent_off is a percentage (20 means 20%), but the code multiplies the price by it directly, so 20 becomes 2000%. Divide by 100 to turn it into a fraction.",
+    "action": "propose_fix",
+    "summary": "Convert the percentage to a fraction before multiplying",
+    "edits": [
+      {
+        "path": "shop/pricing.py",
+        "old": "    return price - price * percent_off",
+        "new": "    return price - price * (percent_off / 100)"
+      }
+    ]
+  }
+]
